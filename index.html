@@ -192,3 +192,79 @@ function startQuiz(){
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DSAT - Quiz</title>
+<style>
+body { font-family: Arial, sans-serif; background: #eef0f5; margin: 0; padding: 0; text-align: center; }
+h1 { margin-top: 30px; font-size: 38px; color: #333; }
+.container { max-width: 800px; margin: 30px auto; display: flex; flex-direction: column; gap: 25px; }
+.block { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.12); transition: transform 0.3s ease; }
+.block:hover { transform: translateY(-5px); }
+button { padding: 10px 20px; background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin:5px; }
+button:hover { transform: translateY(-2px); box-shadow:0 6px 8px rgba(0,0,0,0.3); background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%); }
+</style>
+</head>
+<body>
+
+<h1>DSAT - Quiz</h1>
+
+<div class="container">
+  <div class="block" id="quizBlock">
+    <h2>Daily Quiz</h2>
+    <div id="questionArea"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <p id="scoreArea" style="font-weight:bold;"></p>
+  </div>
+</div>
+
+<script>
+// ====== بيانات الكويز ======
+const quizQuestions = [
+  { q: "Did you study at least 2 hours today?", options: ["Yes", "No"], answer: "Yes" },
+  { q: "Did you review yesterday's notes?", options: ["Yes", "No"], answer: "Yes" },
+  { q: "Did you complete your task list?", options: ["Yes", "No"], answer: "Yes" }
+];
+
+let currentQ = 0;
+let score = 0;
+
+// ====== عرض السؤال ======
+function showQuestion() {
+  if(currentQ >= quizQuestions.length){
+    document.getElementById("questionArea").innerHTML = "✅ Quiz finished!";
+    document.getElementById("scoreArea").innerText = "Your Score: " + score + "/" + quizQuestions.length;
+    // تخزين النتيجة
+    localStorage.setItem("DSATScore", score);
+    return;
+  }
+  let qObj = quizQuestions[currentQ];
+  let html = "<p>" + qObj.q + "</p>";
+  qObj.options.forEach(opt=>{
+    html += `<button onclick="checkAnswer('${opt}')">${opt}</button>`;
+  });
+  document.getElementById("questionArea").innerHTML = html;
+}
+
+// ====== التحقق من الإجابة ======
+function checkAnswer(selected){
+  let correct = quizQuestions[currentQ].answer;
+  if(selected === correct) score++;
+  currentQ++;
+  showQuestion();
+}
+
+// ====== زر Next (يمكن تخطي السؤال) ======
+function nextQuestion(){
+  currentQ++;
+  showQuestion();
+}
+
+// تشغيل الكويز أول مرة
+showQuestion();
+</script>
+
+</body>
+</html>
