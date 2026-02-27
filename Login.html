@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login - Med Study</title>
+<style>
+body { font-family: Arial, sans-serif; background: #eef0f5; text-align: center; margin:0; padding:0; }
+h1 { margin-top: 60px; font-size: 38px; color: #333; }
+.container { background: white; padding: 30px; margin: 50px auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 300px; }
+input[type="text"] { padding: 10px; width: 80%; margin-top: 15px; border-radius: 6px; border: 1px solid #ccc; }
+button { padding: 10px 20px; margin-top: 20px; cursor: pointer; background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; border: none; border-radius: 8px; font-weight: bold; }
+button:hover { transform: translateY(-2px); box-shadow: 0 6px 8px rgba(0,0,0,0.3); background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%); }
+</style>
+</head>
+<body>
+
+<h1>Welcome to Med Study</h1>
+
+<div class="container">
+  <h2>Login</h2>
+  <input id="username" type="text" placeholder="Enter your name">
+  <br>
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login() {
+  let name = document.getElementById("username").value.trim();
+  if(name === "") return alert("Please enter your name!");
+  localStorage.setItem("username", name);
+  window.location.href = "main.html";
+}
+</script>
+
+</body>
+</html>
