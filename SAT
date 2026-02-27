@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DSAT - Personal</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #eef0f5;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 30px;
+  font-size: 38px;
+  color: #333;
+}
+
+/* Container for blocks */
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Individual block style */
+.block {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease;
+}
+
+.block:hover {
+  transform: translateY(-5px);
+}
+
+.block h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  color: #222;
+}
+
+.block p {
+  font-size: 14px;
+  color: #555;
+  margin: 0 0 15px;
+}
+
+button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 70%;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+ul {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.checked {
+  text-decoration: line-through;
+  color: grey;
+}
+</style>
+</head>
+<body>
+
+<h1>DSAT - Daily Study Assessment</h1>
+
+<div class="container">
+
+  <!-- Block 1: User & Tasks -->
+  <div class="block">
+    <h2>Enter Your Name</h2>
+    <input id="username" placeholder="Your name">
+    <button onclick="setUsername()">Save Name</button>
+
+    <h2 style="margin-top:20px;">Add Tasks</h2>
+    <input id="taskInput" type="text" placeholder="Enter a task">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <!-- Block 2: Pomodoro Timer -->
+  <div class="block">
+    <h2>Pomodoro Timer</h2>
+    <h3 id="timer">25:00</h3>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+
+  <!-- Block 3: Quick DSAT Quiz -->
+  <div class="block">
+    <h2>Quick DSAT Quiz</h2>
+    <p>Answer a short daily question!</p>
+    <button onclick="startQuiz()">Start Quiz</button>
+    <p id="quizResult" style="margin-top:10px;font-weight:bold;"></p>
+  </div>
+
+</div>
+
+<script>
+// ================= Username =================
+let username = "";
+function setUsername(){
+  let name = document.getElementById("username").value.trim();
+  if(name==="") return alert("Please enter your name!");
+  username = name;
+  alert("Name saved: " + username);
+}
+
+// ================= Tasks =====================
+function addTask(){
+  let input = document.getElementById("taskInput");
+  if(input.value==="") return;
+  let li = document.createElement("li");
+  let checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.onclick = function(){
+    li.classList.toggle("checked");
+  }
+  li.appendChild(checkbox);
+  li.appendChild(document.createTextNode(" " + input.value));
+  document.getElementById("taskList").appendChild(li);
+  input.value="";
+}
+
+// ================= Timer ====================
+let time = 1500; // 25 minutes
+let timerInterval;
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval = setInterval(function(){
+    let minutes = Math.floor(time/60);
+    let seconds = time%60;
+    document.getElementById("timer").innerText = minutes + ":" + (seconds<10?"0":"")+seconds;
+    time--;
+    if(time < 0){
+      clearInterval(timerInterval);
+      alert("Time is up!");
+      time = 1500;
+      document.getElementById("timer").innerText = "25:00";
+    }
+  }, 1000);
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  time = 1500;
+  document.getElementById("timer").innerText = "25:00";
+}
+
+// ================= Quiz =====================
+function startQuiz(){
+  let questions = [
+    { q: "Did you study at least 2 hours today?", a: "Yes" },
+    { q: "Did you revise yesterday's notes?", a: "Yes" },
+    { q: "Did you complete your task list?", a: "Yes" }
+  ];
+  let randomQ = questions[Math.floor(Math.random()*questions.length)];
+  let ans = prompt(randomQ.q+" (Yes/No)").trim();
+  let result = (ans.toLowerCase() === randomQ.a.toLowerCase()) ? "✅ Great job!" : "⚠️ Keep going!";
+  document.getElementById("quizResult").innerText = result;
+}
+</script>
+
+</body>
+</html>
