@@ -2,56 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>موقع المذاكرة</title>
-
-<style>
-body{
-font-family: Arial;
-text-align:center;
-background:#f2f2f2;
-}
-
-.container{
-background:white;
-padding:20px;
-margin:30px auto;
-width:300px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-button{
-padding:10px;
-margin:5px;
-cursor:pointer;
-}
-
-input{
-padding:8px;
-width:70%;
-}
-
-li{
-text-align:left;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>Friends Studying </h1>
-
-<div class="container">
-<h2>Studying list</h2>
-
-<input id="taskInput" placeholder="اكتب مهمة">
-<button onclick="addTask()">اضافة</button>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>To do list</title>
+<title>Study Website Advanced</title>
 <style>
 body{
   font-family: Arial;
@@ -62,20 +13,20 @@ body{
 .container{
   background:white;
   padding:20px;
-  margin:30px auto;
-  width:300px;
+  margin:20px auto;
+  width:350px;
   border-radius:10px;
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 button{
-  padding:10px;
+  padding:8px;
   margin:5px;
   cursor:pointer;
 }
 
 input[type="text"]{
-  padding:8px;
+  padding:6px;
   width:70%;
 }
 
@@ -89,197 +40,175 @@ li{
   text-decoration: line-through;
   color: grey;
 }
+
+#messages{
+  height:150px;
+  overflow-y:auto;
+  border:1px solid #ccc;
+  padding:5px;
+  text-align:left;
+}
 </style>
 </head>
 <body>
 
-<h1>📚Studying list</h1>
+<h1>📚 Advanced Study Website</h1>
 
 <div class="container">
-  <input id="taskInput" type="text" placeholder="اكتب مهمة">
-  <button onclick="addTask()">اضافة</button>
+  <h2>Enter Your Name</h2>
+  <input id="username" placeholder="Your name">
+  <button onclick="setUsername()">Save</button>
+</div>
 
+<!-- Task List -->
+<div class="container">
+  <h2>Study Tasks</h2>
+  <input id="taskInput" type="text" placeholder="Enter a task">
+  <button onclick="addTask()">Add</button>
   <ul id="taskList"></ul>
 </div>
 
-<script>
-function addTask(){
-  let input = document.getElementById("taskInput");
-  if(input.value === "") return;
-
-  let li = document.createElement("li");
-
-  let checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.onclick = function(){
-    if(this.checked){
-      li.classList.add("checked");
-    } else {
-      li.classList.remove("checked");
-    }
-  }
-
-  li.appendChild(checkbox);
-  li.appendChild(document.createTextNode(" " + input.value));
-
-  document.getElementById("taskList").appendChild(li);
-  input.value = "";
-}
-</script>
-
-</body>
-</html>
-<h2>تايمر المذاكرة</h2>
-
-<h3 id="timer">25:00</h3>
-
-<button onclick="startTimer()">ابدأ</button>
-<button onclick="resetTimer()">إعادة</button>
-
-</div>
-
-
+<!-- Pomodoro Timer -->
 <div class="container">
-<h2>الملاحظات</h2>
-
-<textarea rows="8" cols="30"></textarea>
-
+  <h2>Study Timer</h2>
+  <h3 id="timer">25:00</h3>
+  <button onclick="startTimer()">Start</button>
+  <button onclick="resetTimer()">Reset</button>
 </div>
 
-<script>
-
-let time = 1500;
-let timerInterval;
-
-function startTimer(){
-timerInterval = setInterval(function(){
-
-let minutes = Math.floor(time/60);
-let seconds = time%60;
-
-document.getElementById("timer").innerText =
-minutes + ":" + (seconds<10?"0":"") + seconds;
-
-time--;
-
-if(time<0){
-clearInterval(timerInterval);
-alert("انتهى وقت المذاكرة!");
-}
-
-},1000);
-}
-
-function resetTimer(){
-clearInterval(timerInterval);
-time = 1500;
-document.getElementById("timer").innerText = "25:00";
-}
-
-function addTask(){
-
-let input = document.getElementById("taskInput");
-let li = document.createElement("li");
-
-li.textContent = input.value;
-
-document.getElementById("taskList").appendChild(li);
-
-input.value="";
-
-}
-
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Study Chat</title>
-</head>
-
-<body>
-
-<h2>💬 شات المذاكرة</h2>
-
-<input id="msg" placeholder="اكتب رسالة">
-<button onclick="sendMsg()">ارسال</button>
-
-<ul id="messages"></ul>
+<!-- Chat -->
+<div class="container">
+  <h2>💬 Live Chat</h2>
+  <input id="msg" placeholder="Type a message">
+  <button onclick="sendMsg()">Send</button>
+  <ul id="messages"></ul>
+</div>
 
 <script type="module">
+// ================= Firebase Config =====================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded, set, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Replace with your Firebase Web App config
 const firebaseConfig = {
-  apiKey: "AIzaSyCQuUEy-qA1HhNeKgEh4SoNjnrs7_Zhujc",
-  authDomain: "study-chat-38248.firebaseapp.com",
-  projectId: "study-chat-38248",
-  storageBucket: "study-chat-38248.firebasestorage.app",
-  messagingSenderId: "630014097136",
-  appId: "1:630014097136:web:41b8d8cffd47515febb435",
-  measurementId: "G-317J60SVT7"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-window.sendMsg = function(){
-
-let text = document.getElementById("msg").value;
-
-push(ref(db,"chat"),{
-message:text
-});
-
-document.getElementById("msg").value="";
-
+// =================== Username =====================
+let username = "";
+function setUsername(){
+  let name = document.getElementById("username").value.trim();
+  if(name==="") return alert("Please enter your name!");
+  username = name;
+  alert("Your name is set: " + username);
 }
 
-onChildAdded(ref(db,"chat"),function(data){
+// =================== Chat ===========================
+window.sendMsg = function(){
+  if(username==="") return alert("Please enter your name first!");
+  let text = document.getElementById("msg").value.trim();
+  if(text==="") return;
+  push(ref(db,"chat"), { user: username, message:text });
+  document.getElementById("msg").value="";
+}
 
-let li=document.createElement("li");
-li.innerText=data.val().message;
-
-document.getElementById("messages").appendChild(li);
-
+onChildAdded(ref(db,"chat"), function(data){
+  let li = document.createElement("li");
+  li.innerHTML = `<b>${data.val().user}:</b> ${data.val().message}`;
+  document.getElementById("messages").appendChild(li);
 });
 
-</script>
+// =================== Tasks =====================
+function addTask(){
+  let input = document.getElementById("taskInput");
+  if(input.value==="") return;
 
-</body>
-</html> 
+  let task = input.value;
+  let taskRef = push(ref(db,"tasks"));
+  set(taskRef,{ task: task, done: false });
+
+  input.value="";
+}
+
+// Load stored tasks
+get(child(ref(db), "tasks")).then(snapshot=>{
+  if(snapshot.exists()){
+    snapshot.forEach(s=>{
+      displayTask(s.key, s.val().task, s.val().done);
+    });
+  }
+});
+
+function displayTask(key, task, done){
   let li = document.createElement("li");
-
   let checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
+  checkbox.type="checkbox";
+  checkbox.checked = done;
+  if(done) li.classList.add("checked");
+
   checkbox.onclick = function(){
-    if(this.checked){
-      li.classList.add("checked");
-    } else {
-      li.classList.remove("checked");
-    }
+    set(ref(db,"tasks/"+key), { task: task, done: this.checked });
+    li.classList.toggle("checked");
   }
 
   li.appendChild(checkbox);
-  li.appendChild(document.createTextNode(" " + input.value));
-
+  li.appendChild(document.createTextNode(" " + task));
   document.getElementById("taskList").appendChild(li);
-  input.value = "";
+}
+
+// =================== Timer ====================
+let time = 1500; // 25 minutes
+let timerInterval;
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval = setInterval(function(){
+    let minutes = Math.floor(time/60);
+    let seconds = time%60;
+    document.getElementById("timer").innerText = minutes + ":" + (seconds<10?"0":"")+seconds;
+    time--;
+    if(time<0){
+      clearInterval(timerInterval);
+      alert("Time is up!");
+      time=1500;
+      document.getElementById("timer").innerText="25:00";
+    }
+  },1000);
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  time=1500;
+  document.getElementById("timer").innerText="25:00";
 }
 </script>
 
 </body>
 </html>
+button{
+  padding:10px 15px;
+  margin:5px;
+  cursor:pointer;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+button:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+}
