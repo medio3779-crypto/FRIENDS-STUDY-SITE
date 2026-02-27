@@ -2,192 +2,189 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>DSAT - Personal</title>
+<title>SAT Dashboard - MedLogic Style</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #eef0f5;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
+body { font-family: Arial, sans-serif; background: #eef0f5; margin: 0; padding: 0; }
+header { background: #466bb0; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
+.container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 30px auto; }
+.block { background:white; border-radius:12px; padding:20px; box-shadow:0 6px 15px rgba(0,0,0,0.12); transition: transform 0.3s; }
+.block:hover { transform: translateY(-5px); }
+.block img { width:60px; margin-bottom:10px; }
+.block h2 { margin:5px 0; font-size:22px; color:#222; }
+.block p { color:#555; }
+button { padding:8px 16px; border:none; border-radius:6px; cursor:pointer; margin-top:8px; font-weight:bold; color:white; }
+input[type="text"],textarea { width:95%; padding:8px; border-radius:6px; border:1px solid #ccc; margin-top:10px; }
+ul { text-align:left; padding-left:20px; }
+.checked { text-decoration:line-through;color:grey; }
 
-h1 {
-  margin-top: 30px;
-  font-size: 38px;
-  color: #333;
-}
-
-/* Container for blocks */
-.container {
-  max-width: 800px;
-  margin: 30px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-/* Individual block style */
-.block {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-  transition: transform 0.3s ease;
-}
-
-.block:hover {
-  transform: translateY(-5px);
-}
-
-.block h2 {
-  margin: 0 0 10px;
-  font-size: 22px;
-  color: #222;
-}
-
-.block p {
-  font-size: 14px;
-  color: #555;
-  margin: 0 0 15px;
-}
-
-button {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
-  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-}
-
-input[type="text"] {
-  padding: 8px;
-  width: 70%;
-  margin-top: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-ul {
-  text-align: left;
-  padding-left: 20px;
-}
-
-.checked {
-  text-decoration: line-through;
-  color: grey;
-}
+/* Gradient Buttons */
+.materials-btn { background: linear-gradient(135deg,#ff7e5f,#feb47b);}
+.quiz-btn { background: linear-gradient(135deg,#43cea2,#185a9d);}
+.mistake-btn { background: linear-gradient(135deg,#f7971e,#ffd200);}
+.timer-btn { background: linear-gradient(135deg,#6a11cb,#2575fc);}
+.task-btn { background: linear-gradient(135deg,#ff416c,#ff4b2b);}
+.notes-btn { background: linear-gradient(135deg,#11998e,#38ef7d);}
 </style>
 </head>
 <body>
 
-<h1>DSAT - Daily Study Assessment</h1>
+<header>SAT Dashboard - MedLogic Style</header>
 
 <div class="container">
 
-  <!-- Block 1: User & Tasks -->
-  <div class="block">
-    <h2>Enter Your Name</h2>
-    <input id="username" placeholder="Your name">
-    <button onclick="setUsername()">Save Name</button>
+<!-- Materials -->
+<div class="block">
+  <img src="https://i.imgur.com/7zZbV9u.png" alt="Materials">
+  <h2>Materials</h2>
+  <p>Links and PDF resources</p>
+  <ul>
+    <li><a href="#" target="_blank">Math Notes PDF</a></li>
+    <li><a href="#" target="_blank">English Practice</a></li>
+  </ul>
+  <button class="materials-btn">Open</button>
+</div>
 
-    <h2 style="margin-top:20px;">Add Tasks</h2>
-    <input id="taskInput" type="text" placeholder="Enter a task">
-    <button onclick="addTask()">Add Task</button>
-    <ul id="taskList"></ul>
-  </div>
+<!-- Quizzes -->
+<div class="block">
+  <img src="https://i.imgur.com/5hVQfFZ.png" alt="Quizzes">
+  <h2>Quizzes</h2>
+  <p>Daily SAT Quiz</p>
+  <button class="quiz-btn" onclick="startQuiz()">Start Quiz</button>
+  <div id="quizResult" style="margin-top:10px;font-weight:bold;"></div>
+</div>
 
-  <!-- Block 2: Pomodoro Timer -->
-  <div class="block">
-    <h2>Pomodoro Timer</h2>
-    <h3 id="timer">25:00</h3>
-    <button onclick="startTimer()">Start</button>
-    <button onclick="resetTimer()">Reset</button>
-  </div>
+<!-- Mistakes -->
+<div class="block">
+  <img src="https://i.imgur.com/X9d7TQr.png" alt="Mistakes">
+  <h2>Mistake Analog</h2>
+  <p>Record your mistakes</p>
+  <input id="mistakeInput" type="text" placeholder="Enter mistake">
+  <button class="mistake-btn" onclick="addMistake()">Add Mistake</button>
+  <ul id="mistakeList"></ul>
+</div>
 
-  <!-- Block 3: Quick DSAT Quiz -->
-  <div class="block">
-    <h2>Quick DSAT Quiz</h2>
-    <p>Answer a short daily question!</p>
-    <button onclick="startQuiz()">Start Quiz</button>
-    <p id="quizResult" style="margin-top:10px;font-weight:bold;"></p>
-  </div>
+<!-- Pomodoro -->
+<div class="block">
+  <img src="https://i.imgur.com/3XYp25t.png" alt="Timer">
+  <h2>Pomodoro Timer</h2>
+  <h3 id="timer">25:00</h3>
+  <button class="timer-btn" onclick="startTimer()">Start</button>
+  <button class="timer-btn" onclick="resetTimer()">Reset</button>
+</div>
+
+<!-- To-Do List -->
+<div class="block">
+  <img src="https://i.imgur.com/Yy6Y8nY.png" alt="ToDo">
+  <h2>To-Do List</h2>
+  <input id="taskInput" type="text" placeholder="Enter task">
+  <button class="task-btn" onclick="addTask()">Add Task</button>
+  <ul id="taskList"></ul>
+</div>
+
+<!-- Notes -->
+<div class="block">
+  <img src="https://i.imgur.com/ITvkhTL.png" alt="Notes">
+  <h2>Notes</h2>
+  <textarea id="notes" rows="6" placeholder="Write your notes..."></textarea>
+  <button class="notes-btn" onclick="saveNotes()">Save Notes</button>
+</div>
 
 </div>
 
 <script>
-// ================= Username =================
-let username = "";
-function setUsername(){
-  let name = document.getElementById("username").value.trim();
-  if(name==="") return alert("Please enter your name!");
-  username = name;
-  alert("Name saved: " + username);
-}
-
-// ================= Tasks =====================
+// ===== Tasks =====
 function addTask(){
-  let input = document.getElementById("taskInput");
+  let input=document.getElementById("taskInput");
   if(input.value==="") return;
-  let li = document.createElement("li");
-  let checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.onclick = function(){
-    li.classList.toggle("checked");
-  }
+  let li=document.createElement("li");
+  let checkbox=document.createElement("input");
+  checkbox.type="checkbox";
+  checkbox.onclick=function(){li.classList.toggle("checked")};
   li.appendChild(checkbox);
-  li.appendChild(document.createTextNode(" " + input.value));
+  li.appendChild(document.createTextNode(" "+input.value));
   document.getElementById("taskList").appendChild(li);
+  let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
+  tasks.push(input.value);
+  localStorage.setItem("tasks",JSON.stringify(tasks));
   input.value="";
 }
 
-// ================= Timer ====================
-let time = 1500; // 25 minutes
-let timerInterval;
+// Load tasks
+window.onload=function(){
+  let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
+  tasks.forEach(t=>{
+    let li=document.createElement("li");
+    let checkbox=document.createElement("input");
+    checkbox.type="checkbox";
+    checkbox.onclick=function(){li.classList.toggle("checked")};
+    li.appendChild(checkbox);
+    li.appendChild(document.createTextNode(" "+t));
+    document.getElementById("taskList").appendChild(li);
+  });
 
+  // Load mistakes
+  let mistakes=JSON.parse(localStorage.getItem("mistakes")||"[]");
+  mistakes.forEach(m=>{
+    let li=document.createElement("li");
+    li.textContent=m;
+    document.getElementById("mistakeList").appendChild(li);
+  });
+
+  // Load notes
+  let savedNotes=localStorage.getItem("notes");
+  if(savedNotes) document.getElementById("notes").value=savedNotes;
+}
+
+// ===== Mistakes =====
+function addMistake(){
+  let input=document.getElementById("mistakeInput");
+  if(input.value==="") return;
+  let li=document.createElement("li");
+  li.textContent=input.value;
+  document.getElementById("mistakeList").appendChild(li);
+  let mistakes=JSON.parse(localStorage.getItem("mistakes")||"[]");
+  mistakes.push(input.value);
+  localStorage.setItem("mistakes",JSON.stringify(mistakes));
+  input.value="";
+}
+
+// ===== Pomodoro =====
+let time=1500; let timerInterval;
 function startTimer(){
   clearInterval(timerInterval);
-  timerInterval = setInterval(function(){
-    let minutes = Math.floor(time/60);
-    let seconds = time%60;
-    document.getElementById("timer").innerText = minutes + ":" + (seconds<10?"0":"")+seconds;
+  timerInterval=setInterval(function(){
+    let minutes=Math.floor(time/60);
+    let seconds=time%60;
+    document.getElementById("timer").innerText=minutes+":"+(seconds<10?"0":"")+seconds;
     time--;
-    if(time < 0){
-      clearInterval(timerInterval);
-      alert("Time is up!");
-      time = 1500;
-      document.getElementById("timer").innerText = "25:00";
-    }
-  }, 1000);
+    if(time<0){clearInterval(timerInterval);alert("Time's up!");time=1500;document.getElementById("timer").innerText="25:00";}
+  },1000);
+}
+function resetTimer(){clearInterval(timerInterval);time=1500;document.getElementById("timer").innerText="25:00";}
+
+// ===== Notes =====
+function saveNotes(){
+  let notes=document.getElementById("notes").value;
+  localStorage.setItem("notes",notes);
+  alert("Notes saved!");
 }
 
-function resetTimer(){
-  clearInterval(timerInterval);
-  time = 1500;
-  document.getElementById("timer").innerText = "25:00";
+// ===== Quiz =====
+const quizQuestions=[
+  {q:"Math Question 1?",options:["A","B","C"],answer:"A"},
+  {q:"English Question 1?",options:["True","False"],answer:"True"},
+  {q:"Math Question 2?",options:["A","B","C"],answer:"B"}
+];
+let currentQ=0,score=0;
+function startQuiz(){ currentQ=0; score=0; showQuestion(); }
+function showQuestion(){
+  if(currentQ>=quizQuestions.length){document.getElementById("quizResult").innerText="Quiz Finished! Score: "+score+"/"+quizQuestions.length; localStorage.setItem("quizScore",score); return;}
+  let q=quizQuestions[currentQ];
+  let html="<p>"+q.q+"</p>";
+  q.options.forEach(opt=>{html+="<button onclick=\"checkAnswer('"+opt+"')\">"+opt+"</button> "});
+  document.getElementById("quizResult").innerHTML=html;
 }
-
-// ================= Quiz =====================
-function startQuiz(){
-  let questions = [
-    { q: "Did you study at least 2 hours today?", a: "Yes" },
-    { q: "Did you revise yesterday's notes?", a: "Yes" },
-    { q: "Did you complete your task list?", a: "Yes" }
-  ];
-  let randomQ = questions[Math.floor(Math.random()*questions.length)];
-  let ans = prompt(randomQ.q+" (Yes/No)").trim();
-  let result = (ans.toLowerCase() === randomQ.a.toLowerCase()) ? "✅ Great job!" : "⚠️ Keep going!";
-  document.getElementById("quizResult").innerText = result;
-}
+function checkAnswer(ans){ if(ans===quizQuestions[currentQ].answer) score++; currentQ++; showQuestion(); }
 </script>
 
 </body>
