@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>موقع المذاكرة</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+background:#f2f2f2;
+}
+
+.container{
+background:white;
+padding:20px;
+margin:30px auto;
+width:300px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px;
+margin:5px;
+cursor:pointer;
+}
+
+input{
+padding:8px;
+width:70%;
+}
+
+li{
+text-align:left;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📚 موقع المذاكرة</h1>
+
+<div class="container">
+<h2>قائمة المذاكرة</h2>
+
+<input id="taskInput" placeholder="اكتب مهمة">
+<button onclick="addTask()">اضافة</button>
+
+<ul id="taskList"></ul>
+</div>
+
+
+<div class="container">
+<h2>تايمر المذاكرة</h2>
+
+<h3 id="timer">25:00</h3>
+
+<button onclick="startTimer()">ابدأ</button>
+<button onclick="resetTimer()">إعادة</button>
+
+</div>
+
+
+<div class="container">
+<h2>الملاحظات</h2>
+
+<textarea rows="8" cols="30"></textarea>
+
+</div>
+
+<script>
+
+let time = 1500;
+let timerInterval;
+
+function startTimer(){
+timerInterval = setInterval(function(){
+
+let minutes = Math.floor(time/60);
+let seconds = time%60;
+
+document.getElementById("timer").innerText =
+minutes + ":" + (seconds<10?"0":"") + seconds;
+
+time--;
+
+if(time<0){
+clearInterval(timerInterval);
+alert("انتهى وقت المذاكرة!");
+}
+
+},1000);
+}
+
+function resetTimer(){
+clearInterval(timerInterval);
+time = 1500;
+document.getElementById("timer").innerText = "25:00";
+}
+
+function addTask(){
+
+let input = document.getElementById("taskInput");
+let li = document.createElement("li");
+
+li.textContent = input.value;
+
+document.getElementById("taskList").appendChild(li);
+
+input.value="";
+
+}
+
+</script>
+
+</body>
+</html>
