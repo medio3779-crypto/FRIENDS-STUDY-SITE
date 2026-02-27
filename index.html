@@ -185,3 +185,85 @@ document.getElementById("messages").appendChild(li);
 
 </body>
 </html> 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>قائمة المذاكرة مع علامة صح</title>
+<style>
+body{
+  font-family: Arial;
+  text-align:center;
+  background:#f2f2f2;
+}
+
+.container{
+  background:white;
+  padding:20px;
+  margin:30px auto;
+  width:300px;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+  padding:10px;
+  margin:5px;
+  cursor:pointer;
+}
+
+input[type="text"]{
+  padding:8px;
+  width:70%;
+}
+
+li{
+  text-align:left;
+  list-style:none;
+  margin:5px 0;
+}
+
+.checked{
+  text-decoration: line-through;
+  color: grey;
+}
+</style>
+</head>
+<body>
+
+<h1>📚 قائمة المذاكرة</h1>
+
+<div class="container">
+  <input id="taskInput" type="text" placeholder="اكتب مهمة">
+  <button onclick="addTask()">اضافة</button>
+
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+function addTask(){
+  let input = document.getElementById("taskInput");
+  if(input.value === "") return;
+
+  let li = document.createElement("li");
+
+  let checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.onclick = function(){
+    if(this.checked){
+      li.classList.add("checked");
+    } else {
+      li.classList.remove("checked");
+    }
+  }
+
+  li.appendChild(checkbox);
+  li.appendChild(document.createTextNode(" " + input.value));
+
+  document.getElementById("taskList").appendChild(li);
+  input.value = "";
+}
+</script>
+
+</body>
+</html>
